@@ -17,10 +17,10 @@ def minimaxRoot(depth, board,isMaximizing):
         board.push(move)
         value = max(bestMove, minimax(depth - 1, board, not isMaximizing))
         board.pop()
-        if( value > bestMove):
-            print("Best score: " ,str(bestMove))
-            print("Best move: ",str(bestMoveFinal))
-            print("Second best: ", str(secondBest))
+        if ( value > bestMove):
+            print("Best score: ", bestMove)
+            print("Best move: ", bestMoveFinal)
+            print("Second best: ", secondBest)
             thirdBest = secondBest
             secondBest = bestMove
             bestMove = value
@@ -31,14 +31,13 @@ def minimax(depth, board, is_maximizing):
     if(depth == 0):
         return -evaluation(board)
     possibleMoves = board.legal_moves
-    if(is_maximizing):
+    if is_maximizing:
         bestMove = -9999
         for x in possibleMoves:
             move = chess.Move.from_uci(str(x))
             board.push(move)
             bestMove = max(bestMove,minimax(depth - 1, board, not is_maximizing))
             board.pop()
-        return bestMove
     else:
         bestMove = 9999
         for x in possibleMoves:
@@ -46,7 +45,8 @@ def minimax(depth, board, is_maximizing):
             board.push(move)
             bestMove = min(bestMove, minimax(depth - 1, board, not is_maximizing))
             board.pop()
-        return bestMove
+
+    return bestMove
 
 
 #def calculateMove(board):
@@ -83,40 +83,36 @@ def evaluation(board):
 
 
 def getPieceValue(piece):
-    if(piece == None):
+    if piece is None:
         return 0
     value = 0
-    if piece == "P" or piece == "p":
+    if piece in ["P", "p"]:
         value = 10
-    if piece == "N" or piece == "n":
+    if piece in ["N", "n"]:
         value = 30
-    if piece == "B" or piece == "b":
+    if piece in ["B", "b"]:
         value = 30
-    if piece == "R" or piece == "r":
+    if piece in ["R", "r"]:
         value = 50
-    if piece == "Q" or piece == "q":
+    if piece in ["Q", "q"]:
         value = 90
-    if piece == 'K' or piece == 'k':
+    if piece in ['K', 'k']:
         value = 900
     #value = value if (board.piece_at(place)).color else -value
     return value
 
 def main():
     board = chess.Board()
-    n = 0
     print(board)
-    while n < 100:
+    for n in range(100):
         if n%2 == 0:
             move = input("Enter move: ")
-            move = chess.Move.from_uci(str(move))
-            board.push(move)
         else:
             print("Computers Turn:")
             move = minimaxRoot(4,board,True)
-            move = chess.Move.from_uci(str(move))
-            board.push(move)
+        move = chess.Move.from_uci(str(move))
+        board.push(move)
         print(board)
-        n += 1
 
 
 
